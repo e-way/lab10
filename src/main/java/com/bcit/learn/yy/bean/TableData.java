@@ -33,11 +33,10 @@ public class TableData implements Serializable {
 	private Map<String, String> columnMap = new LinkedHashMap<>();
 	private List<SortedMap<?, ?>> rowArray;
 	private SortedMap<?, ?> mapper = new TreeMap();
-//	private List<List<ColumnModel>> rowsArr;
-	private List<ColumnModel>tempRowsArr;
-	
+	private List<ColumnModel> tempRowsArr;
+
 	private List<Map<String, String>> rowsArrMap;
-	
+
 	public List<Map<String, String>> getRowsArrMap() {
 		return rowsArrMap;
 	}
@@ -64,8 +63,6 @@ public class TableData implements Serializable {
 		this.mapper = mapper;
 	}
 
-	
-
 	public List<ColumnModel> getColumns() {
 		return columns;
 	}
@@ -75,50 +72,42 @@ public class TableData implements Serializable {
 	}
 
 	public TableData() throws SQLException, NamingException {
+		init();
+		
+	}
+
+	private void addColumnName(String[] columnNames) {
+		List<String> stringColumns = Arrays.asList(all.getColumnNames());
+		for (String col : stringColumns) {
+			columns.add(new ColumnModel(col.toUpperCase(), col));
+		}
+		rowArray = Arrays.asList(rows);
+	}
+
+	private void init() throws SQLException, NamingException {
 		columns = new ArrayList<ColumnModel>();
 
 		Result all = getAll();
 		rows = all.getRows();
-		
-		rowsArrMap = new ArrayList<Map<String,String>>();
-		
-	    for (int i=0;i<rows.length;i++)
-	    {
-	    	List<ColumnModel>col = new ArrayList<ColumnModel>();
-	    	Map<String, String>map = new HashMap<String, String>();
-	    	
-	    	Iterator it = rows[i].entrySet().iterator();
-	    	while (it.hasNext())
-	    	{
-	    		Map.Entry<String, Object>entry = (Entry)it.next();
-	    		String key = entry.getKey().toString();
-	    		String value = entry.getValue().toString();
-	    		
-	    		col.add(new ColumnModel(key, value));
-	    		map.put(key, value);
-	    	}
-	    	rowsArrMap.add(map);
-	    }
-	
-		Object[][] rows2 = all.getRowsByIndex();
-		
-		for (int i=0;i<rows2.length; i++)
-		{
-			for (int j=0;j<rows2[i].length;j++)
-			{
-				Object o = rows2[i][j];
-				System.out.println("");
+		addColumnName(all.getColumnNames());
+		setData();
+	}
+
+	private void setData() {
+		rowsArrMap = new ArrayList<Map<String, String>>();
+		for (int i = 0; i < rows.length; i++) {
+			Map<String, String> map = new HashMap<String, String>();
+
+			Iterator it = rows[i].entrySet().iterator();
+			while (it.hasNext()) {
+				Map.Entry<String, Object> entry = (Entry) it.next();
+				String key = entry.getKey().toString();
+				String value = entry.getValue().toString();
+
+				map.put(key, value);
 			}
+			rowsArrMap.add(map);
 		}
-		
-		
-		List<String>stringColumns = Arrays.asList(all.getColumnNames());
-		for(String col : stringColumns)
-		{
-			columns.add(new ColumnModel(col.toUpperCase(), col));
-		}
-		rowArray = Arrays.asList(rows);
-       System.out.println("");
 	}
 
 	public int getRowSize() {
