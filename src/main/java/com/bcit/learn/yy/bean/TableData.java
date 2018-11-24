@@ -10,12 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
-import java.util.TreeMap;
 
 import javax.naming.NamingException;
 import javax.servlet.jsp.jstl.sql.Result;
@@ -29,31 +27,16 @@ public class TableData implements Serializable {
 	private String query = "SELECT * FROM Customers";
 	private String[] columnNames;
 	private List<ColumnModel> columns;
-
 	private List<Map<String, String>> rowsArrMap;
 
-	public List<Map<String, String>> getRowsArrMap() {
-		return rowsArrMap;
-	}
-
-	public void setRowsArrMap(List<Map<String, String>> rowsArrMap) {
-		this.rowsArrMap = rowsArrMap;
-	}
-
-	private int rowSize;
-
-	public List<ColumnModel> getColumns() {
-		return columns;
-	}
-
-	public void setColumns(List<ColumnModel> columns) {
-		this.columns = columns;
-	}
-
 	public TableData() throws SQLException, NamingException {
-		init();
+		Result all = getAll();
 
+		columns = getFormatedColumnNames(all.getColumnNames());
+		rowsArrMap = getDataForTable(all.getRows());
 	}
+
+	
 
 	private List<ColumnModel> getFormatedColumnNames(String[] columnNames) {
 		List<ColumnModel> model = new ArrayList<ColumnModel>();
@@ -63,13 +46,6 @@ public class TableData implements Serializable {
 		}
 
 		return model;
-	}
-
-	private void init() throws SQLException, NamingException {
-		Result all = getAll();
-
-		columns = getFormatedColumnNames(all.getColumnNames());
-		rowsArrMap = getDataForTable(all.getRows());
 	}
 
 	private List<Map<String, String>> getDataForTable(SortedMap[] maps) {
@@ -89,13 +65,21 @@ public class TableData implements Serializable {
 		}
 		return arrMap;
 	}
-
-	public int getRowSize() {
-		return rowSize;
+	
+	public List<Map<String, String>> getRowsArrMap() {
+		return rowsArrMap;
 	}
 
-	public void setRowSize(int rowSize) {
-		this.rowSize = rowSize;
+	public void setRowsArrMap(List<Map<String, String>> rowsArrMap) {
+		this.rowsArrMap = rowsArrMap;
+	}
+
+	public List<ColumnModel> getColumns() {
+		return columns;
+	}
+
+	public void setColumns(List<ColumnModel> columns) {
+		this.columns = columns;
 	}
 
 	public String[] getColumnNames() {
@@ -104,11 +88,6 @@ public class TableData implements Serializable {
 
 	public void setColumnNames(String[] columnNames) {
 		this.columnNames = columnNames;
-	}
-
-	public SortedMap[] getRows() throws SQLException, NamingException {
-		Result all = getAll();
-		return all.getRows();
 	}
 
 	public Connection getConnection() throws SQLException {
@@ -144,7 +123,6 @@ public class TableData implements Serializable {
 	}
 
 	public String queryAction(String value) throws SQLException, NamingException {
-		this.query = value;
 		this.all = getAll(value);
 
 		columns = getFormatedColumnNames(all.getColumnNames());
