@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head>
+	<h:outputStylesheet library="css" name="css/mainstyle.css"/>
+</h:head>
+
+<h:body>
+  <div id="header">
+		<ui:insert name="header" >
+		  <ui:include src="/WEB-INF/jsp/header.xhtml" />
+		</ui:insert>
+	    </div>
+	    
+	    
+	    <div id="mainDoc">
+	<center>
+	  <h:graphicImage  value="images/login.png"/>
+	
+	<h1>Login</h1>
+	 </center>
+
+  <form action="j_security_check" >
+    <table align="center">
+
+	  <tr>
+        <td>Username: </td>
+        <td>
+          <input name="j_username" type="text" value=""></input>
+        </td>
+      </tr>
+
+      <tr>
+        <td>Password: </td>
+        <td>
+          <input name="j_password" type="password" value=""></input>
+        </td>
+      </tr>
+    </table>
+
+	<center><input name="login" type="submit" value="Login"></input></center>
+  </form>
+
+</div>
+	
+</h:body>
+</html>

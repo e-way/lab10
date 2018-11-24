@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jstl/core">
+
+<h:head>
+	<h:outputStylesheet library="css" name="css/mainstyle.css" />
+</h:head>
+
+<h:body>
+	<div id="header">
+		<ui:insert name="header">
+			<ui:include src="/WEB-INF/jsp/header.xhtml" />
+		</ui:insert>
+	</div>
+
+	<div id="mainDoc">
+		<h:form>
+		<!--  
+			<p:dataTable id="table" var="map" value="#{tableData1.rowArray}">
+				<c:forEach items="#{tableData1.mapper}" var="entry">
+					<p:column headerText="#{entry.key}">
+            			#{map[entry.key]}
+        		</p:column>
+				</c:forEach>
+			</p:dataTable>
+
+
+			<p:dataTable id="table2" var="map" value="#{tableData1.rowArray}">
+				<p:columns value="#{tableData1.columns}" var="column">
+				
+				
+					<f:facet name="header">
+						<h:outputText value="#{column.header}" />
+					</f:facet>
+					<h:outputText value="#{column.property}" />
+				</p:columns>
+			</p:dataTable>
+
+-->
+
+			<h:inputText binding="#{query}" value="select * from customers" />
+			<h:commandButton rendered="true" value="Query"
+				action="#{tableData1.queryAction(query.value)}" />
+			<h:outputText value="&lt;br/&gt;" escape="false" />
+		</h:form>
+
+	</div>
+
+	<div id="footer">
+		<ui:insert name="footer">
+			<ui:include src="/WEB-INF/jsp/footer.xhtml" />
+		</ui:insert>
+	</div>
+
+</h:body>
+</html>

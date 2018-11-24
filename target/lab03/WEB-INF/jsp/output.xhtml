@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html">
+
+<h:head>
+	<title>Lab09 Select Query Results</title>
+	<h:outputStylesheet library="css" name="css/mainstyle.css" />
+</h:head>
+
+<h:body>
+
+	<div id="mainDoc">
+
+
+		<h2>
+			<a href="user.xhtml">Query Again</a>
+		</h2>
+		<h2>
+			<a id="logout" title="Log out" href="logout">Log out</a>
+		</h2>
+
+
+		<h:form>
+			<h:dataTable value="#{tableData1.all}" var="customer"
+				styleClass="customers" headerClass="customersHeader"
+				columnClasses="custid,firstName,name,state,city,name,custid">
+
+				<h:column>
+					<f:facet name="header">#{customer.getColumnNames()[0]}</f:facet>
+               #{customer.id}
+               #{customer.Code}
+            </h:column>
+				<h:column>
+					<f:facet name="header">#{customer.getColumnNames()[1]}</f:facet>
+               #{customer.first_name}
+               #{customer.Artist}
+            </h:column>
+				<h:column>
+					<f:facet name="header">lastName</f:facet>
+               #{customer.last_name}
+               #{customer.Title}
+            </h:column>
+				<h:column>
+					<f:facet name="header">phone</f:facet>
+               #{customer.phone}
+               #{customer.Year}
+            </h:column>
+				<h:column>
+					<f:facet name="header">street</f:facet>
+               #{customer.street}
+               #{customer.Time}
+            </h:column>
+				<h:column>
+					<f:facet name="header">city</f:facet>
+               #{customer.city}
+               #{customer.Total}
+            </h:column>
+				<h:column>
+					<f:facet name="header">email</f:facet>
+               #{customer.email}
+               #{customer.Label}
+            </h:column>
+				<h:column>
+					<f:facet name="header">Join Date</f:facet>
+               #{customer.join_date}
+               #{customer.Comment}
+            </h:column>
+
+			</h:dataTable>
+		</h:form>
+
+	</div>
+</h:body>
+</html>
