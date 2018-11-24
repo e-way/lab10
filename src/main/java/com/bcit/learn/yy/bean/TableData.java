@@ -29,11 +29,6 @@ public class TableData implements Serializable {
 	private String query = "SELECT * FROM Customers";
 	private String[] columnNames;
 	private List<ColumnModel> columns;
-	private SortedMap<?, ?>[] rows;
-	private Map<String, String> columnMap = new LinkedHashMap<>();
-	private List<SortedMap<?, ?>> rowArray;
-	private SortedMap<?, ?> mapper = new TreeMap();
-	private List<ColumnModel> tempRowsArr;
 
 	private List<Map<String, String>> rowsArrMap;
 
@@ -47,22 +42,6 @@ public class TableData implements Serializable {
 
 	private int rowSize;
 
-	public List<ColumnModel> getTempRowsArr() {
-		return tempRowsArr;
-	}
-
-	public void setTempRowsArr(List<ColumnModel> tempRowsArr) {
-		this.tempRowsArr = tempRowsArr;
-	}
-
-	public SortedMap<?, ?> getMapper() {
-		return mapper;
-	}
-
-	public void setMapper(SortedMap<?, ?> mapper) {
-		this.mapper = mapper;
-	}
-
 	public List<ColumnModel> getColumns() {
 		return columns;
 	}
@@ -73,32 +52,32 @@ public class TableData implements Serializable {
 
 	public TableData() throws SQLException, NamingException {
 		init();
-		
+
 	}
 
-	private void addColumnName(String[] columnNames) {
-		List<String> stringColumns = Arrays.asList(all.getColumnNames());
+	private List<ColumnModel> getFormatedColumnNames(String[] columnNames) {
+		List<ColumnModel> model = new ArrayList<ColumnModel>();
+		List<String> stringColumns = Arrays.asList(columnNames);
 		for (String col : stringColumns) {
-			columns.add(new ColumnModel(col.toUpperCase(), col));
+			model.add(new ColumnModel(col.toUpperCase(), col));
 		}
-		rowArray = Arrays.asList(rows);
+
+		return model;
 	}
 
 	private void init() throws SQLException, NamingException {
-		columns = new ArrayList<ColumnModel>();
-
 		Result all = getAll();
-		rows = all.getRows();
-		addColumnName(all.getColumnNames());
-		setData();
+
+		columns = getFormatedColumnNames(all.getColumnNames());
+		rowsArrMap = getDataForTable(all.getRows());
 	}
 
-	private void setData() {
-		rowsArrMap = new ArrayList<Map<String, String>>();
-		for (int i = 0; i < rows.length; i++) {
+	private List<Map<String, String>> getDataForTable(SortedMap[] maps) {
+		List<Map<String, String>> arrMap = new ArrayList<Map<String, String>>();
+		for (int i = 0; i < maps.length; i++) {
 			Map<String, String> map = new HashMap<String, String>();
 
-			Iterator it = rows[i].entrySet().iterator();
+			Iterator it = maps[i].entrySet().iterator();
 			while (it.hasNext()) {
 				Map.Entry<String, Object> entry = (Entry) it.next();
 				String key = entry.getKey().toString();
@@ -106,8 +85,9 @@ public class TableData implements Serializable {
 
 				map.put(key, value);
 			}
-			rowsArrMap.add(map);
+			arrMap.add(map);
 		}
+		return arrMap;
 	}
 
 	public int getRowSize() {
@@ -131,10 +111,6 @@ public class TableData implements Serializable {
 		return all.getRows();
 	}
 
-	public void setRows(SortedMap[] rows) {
-		this.rows = rows;
-	}
-
 	public Connection getConnection() throws SQLException {
 		return getConnection("javastudent", "compjava");
 	}
@@ -152,21 +128,7 @@ public class TableData implements Serializable {
 	}
 
 	public Result getAll() throws SQLException, NamingException {
-		try {
-			if (this.all != null) {
-				return this.all;
-			}
-			conn = getConnection("javastudent", "compjava");
-			Statement stmt = conn.createStatement();
-			ResultSet result = stmt.executeQuery(this.query);
-			all = ResultSupport.toResult(result);
-			this.columnNames = all.getColumnNames();
-			this.rows = all.getRows();
-
-			return all;
-		} finally {
-			close();
-		}
+		return getAll(query);
 	}
 
 	public Result getAll(String query) throws SQLException, NamingException {
@@ -174,11 +136,8 @@ public class TableData implements Serializable {
 			conn = getConnection("javastudent", "compjava");
 			Statement stmt = conn.createStatement();
 			ResultSet result = stmt.executeQuery(query);
-			all = ResultSupport.toResult(result);
 
-			this.columnNames = all.getColumnNames();
-			this.rows = all.getRows();
-			return all;
+			return ResultSupport.toResult(result);
 		} finally {
 			close();
 		}
@@ -187,6 +146,10 @@ public class TableData implements Serializable {
 	public String queryAction(String value) throws SQLException, NamingException {
 		this.query = value;
 		this.all = getAll(value);
+
+		columns = getFormatedColumnNames(all.getColumnNames());
+		rowsArrMap = getDataForTable(all.getRows());
+
 		return "/WEB-INF/jsp/output.xhtml";
 	}
 
@@ -196,22 +159,6 @@ public class TableData implements Serializable {
 		}
 		conn.close();
 		conn = null;
-	}
-
-	public Map<String, String> getColumnMap() {
-		return columnMap;
-	}
-
-	public void setColumnMap(Map<String, String> columnMap) {
-		this.columnMap = columnMap;
-	}
-
-	public List<SortedMap<?, ?>> getRowArray() {
-		return rowArray;
-	}
-
-	public void setRowArray(List<SortedMap<?, ?>> rowArray) {
-		this.rowArray = rowArray;
 	}
 
 	static public class ColumnModel implements Serializable {

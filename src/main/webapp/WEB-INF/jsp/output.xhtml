@@ -3,6 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
 	xmlns:h="http://java.sun.com/jsf/html">
 
 <h:head>
@@ -24,52 +25,15 @@
 
 
 		<h:form>
-			<h:dataTable value="#{tableData1.all}" var="customer"
-				styleClass="customers" headerClass="customersHeader"
-				columnClasses="custid,firstName,name,state,city,name,custid">
-
-				<h:column>
-					<f:facet name="header">Id</f:facet>
-               #{customer.id}
-               #{customer.Code}
-            </h:column>
-				<h:column>
-					<f:facet name="header">firstName</f:facet>
-               #{customer.first_name}
-               #{customer.Artist}
-            </h:column>
-				<h:column>
-					<f:facet name="header">lastName</f:facet>
-               #{customer.last_name}
-               #{customer.Title}
-            </h:column>
-				<h:column>
-					<f:facet name="header">phone</f:facet>
-               #{customer.phone}
-               #{customer.Year}
-            </h:column>
-				<h:column>
-					<f:facet name="header">street</f:facet>
-               #{customer.street}
-               #{customer.Time}
-            </h:column>
-				<h:column>
-					<f:facet name="header">city</f:facet>
-               #{customer.city}
-               #{customer.Total}
-            </h:column>
-				<h:column>
-					<f:facet name="header">email</f:facet>
-               #{customer.email}
-               #{customer.Label}
-            </h:column>
-				<h:column>
-					<f:facet name="header">Join Date</f:facet>
-               #{customer.join_date}
-               #{customer.Comment}
-            </h:column>
-
-			</h:dataTable>
+			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArrMap}">
+				<p:columns value="#{tableData1.columns}" var="column"
+					columnIndexVar="colIndex">
+					<f:facet name="header">
+						<h:outputText value="#{column.header}" />
+					</f:facet>
+ 					   #{data.get(column.property)}
+					</p:columns>
+			</p:dataTable>
 		</h:form>
 
 	</div>
