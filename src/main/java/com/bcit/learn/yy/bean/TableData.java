@@ -25,7 +25,6 @@ public class TableData implements Serializable {
 	private Connection conn;
 	private Result all;
 	private String query = "SELECT * FROM Customers";
-	private String[] columnNames;
 	private List<ColumnModel> columns;
 	private List<Map<String, String>> rowsArrMap;
 
@@ -35,8 +34,6 @@ public class TableData implements Serializable {
 		columns = getFormatedColumnNames(all.getColumnNames());
 		rowsArrMap = getDataForTable(all.getRows());
 	}
-
-	
 
 	private List<ColumnModel> getFormatedColumnNames(String[] columnNames) {
 		List<ColumnModel> model = new ArrayList<ColumnModel>();
@@ -80,14 +77,6 @@ public class TableData implements Serializable {
 
 	public void setColumns(List<ColumnModel> columns) {
 		this.columns = columns;
-	}
-
-	public String[] getColumnNames() {
-		return columnNames;
-	}
-
-	public void setColumnNames(String[] columnNames) {
-		this.columnNames = columnNames;
 	}
 
 	public Connection getConnection() throws SQLException {
