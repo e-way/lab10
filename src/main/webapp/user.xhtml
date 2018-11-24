@@ -21,28 +21,16 @@
 
 	<div id="mainDoc">
 		<h:form>
-		<!--  
-			<p:dataTable id="table" var="map" value="#{tableData1.rowArray}">
-				<c:forEach items="#{tableData1.mapper}" var="entry">
-					<p:column headerText="#{entry.key}">
-            			#{map[entry.key]}
-        		</p:column>
-				</c:forEach>
-			</p:dataTable>
-
-
-			<p:dataTable id="table2" var="map" value="#{tableData1.rowArray}">
-				<p:columns value="#{tableData1.columns}" var="column">
-				
-				
+			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArrMap}">
+				<p:columns value="#{tableData1.columns}" var="column"
+					columnIndexVar="colIndex">
 					<f:facet name="header">
 						<h:outputText value="#{column.header}" />
 					</f:facet>
-					<h:outputText value="#{column.property}" />
-				</p:columns>
+ 					   #{data.get(column.property)}
+					</p:columns>
 			</p:dataTable>
 
--->
 
 			<h:inputText binding="#{query}" value="select * from customers" />
 			<h:commandButton rendered="true" value="Query"

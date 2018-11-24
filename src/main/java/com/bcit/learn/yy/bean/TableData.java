@@ -8,9 +8,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
@@ -33,6 +37,36 @@ public class TableData implements Serializable {
 	private Map<String, String> columnMap = new LinkedHashMap<>();
 	private List<SortedMap<?, ?>> rowArray;
 	private SortedMap<?, ?> mapper = new TreeMap();
+	private List<List<ColumnModel>> rowsArr;
+	private List<ColumnModel>tempRowsArr;
+	
+	private List<Map<String, String>> rowsArrMap;
+	
+	public List<Map<String, String>> getRowsArrMap() {
+		return rowsArrMap;
+	}
+
+	public void setRowsArrMap(List<Map<String, String>> rowsArrMap) {
+		this.rowsArrMap = rowsArrMap;
+	}
+
+	private int rowSize;
+
+	public List<ColumnModel> getTempRowsArr() {
+		return tempRowsArr;
+	}
+
+	public void setTempRowsArr(List<ColumnModel> tempRowsArr) {
+		this.tempRowsArr = tempRowsArr;
+	}
+
+	public List<List<ColumnModel>> getRowsArr() {
+		return rowsArr;
+	}
+
+	public void setRowsArr(List<List<ColumnModel>> rowsArr) {
+		this.rowsArr = rowsArr;
+	}
 
 	public SortedMap<?, ?> getMapper() {
 		return mapper;
@@ -57,6 +91,45 @@ public class TableData implements Serializable {
 
 		Result all = getAll();
 		rows = all.getRows();
+		
+		
+		
+		rowsArr = new ArrayList<List<ColumnModel>>(); 
+		rowsArrMap = new ArrayList<Map<String,String>>();
+		
+	    for (int i=0;i<rows.length;i++)
+	    {
+	    	List<ColumnModel>col = new ArrayList<ColumnModel>();
+	    	Map<String, String>map = new HashMap<String, String>();
+	    	
+	    	Iterator it = rows[i].entrySet().iterator();
+	    	while (it.hasNext())
+	    	{
+	    		Map.Entry<String, Object>entry = (Entry)it.next();
+	    		String key = entry.getKey().toString();
+	    		String value = entry.getValue().toString();
+	    		
+	    		col.add(new ColumnModel(key, value));
+	    		map.put(key, value);
+	    	}
+	    	rowsArrMap.add(map);
+	    	rowsArr.add(col);
+	    }
+	
+	    rowSize = rowsArr.size();//all.getRowCount();
+		
+		Object[][] rows2 = all.getRowsByIndex();
+		
+		for (int i=0;i<rows2.length; i++)
+		{
+			for (int j=0;j<rows2[i].length;j++)
+			{
+				Object o = rows2[i][j];
+				System.out.println("");
+			}
+		}
+		
+		
 		List<String>stringColumns = Arrays.asList(all.getColumnNames());
 		for(String col : stringColumns)
 		{
@@ -76,6 +149,14 @@ public class TableData implements Serializable {
 //			}
 //		}
        System.out.println("");
+	}
+
+	public int getRowSize() {
+		return rowSize;
+	}
+
+	public void setRowSize(int rowSize) {
+		this.rowSize = rowSize;
 	}
 
 	public String[] getColumnNames() {
