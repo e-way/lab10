@@ -6,13 +6,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.naming.NamingException;
 import javax.servlet.jsp.jstl.sql.Result;
 import javax.servlet.jsp.jstl.sql.ResultSupport;
 
 public class Db implements IDataService {
 	private Connection conn;
-	private String query = "SELECT * FROM Customers";
 
 	public Connection getConnection() throws SQLException {
 		return getConnection("javastudent", "compjava");
@@ -30,10 +28,6 @@ public class Db implements IDataService {
 		return conn;
 	}
 
-	public Result getAll() throws SQLException, NamingException {
-		return getAll(query);
-	}
-
 	public Result getAll(String query) {
 		try {
 			conn = getConnection("javastudent", "compjava");
@@ -47,7 +41,6 @@ public class Db implements IDataService {
 			try {
 				close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

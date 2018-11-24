@@ -21,9 +21,8 @@
 			<a id="logout" title="Log out" href="logout">Log out</a>
 		</h2>
 
-
 		<h:form>
-			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArrMap}" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArrMap}" rows="5" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15" style="width: 80%;margin-left: 10%;margin-right: 10%;">
 				<p:columns value="#{tableData1.columns}" var="column"
 					columnIndexVar="colIndex">

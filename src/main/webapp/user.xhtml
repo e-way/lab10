@@ -21,7 +21,8 @@
 
 	<div id="mainDoc">
 		<h:form>
-			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArrMap}">
+			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArrMap}"  rows="5" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15" style="width: 80%;margin-left: 10%;margin-right: 10%;">
 				<p:columns value="#{tableData1.columns}" var="column"
 					columnIndexVar="colIndex">
 					<f:facet name="header">
@@ -31,13 +32,11 @@
 					</p:columns>
 			</p:dataTable>
 
-
-			<h:inputText binding="#{query}" value="select * from customers" />
+			<h:inputText binding="#{query}" value="select * from Employees" />
 			<h:commandButton rendered="true" value="Query"
 				action="#{tableData1.queryAction(query.value)}" />
 			<h:outputText value="&lt;br/&gt;" escape="false" />
 		</h:form>
-
 	</div>
 
 	<div id="footer">

@@ -1,11 +1,7 @@
 package com.bcit.learn.yy.bean;
 
 import java.io.Serializable;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,18 +10,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
-
+import javax.faces.bean.ViewScoped;
 import javax.naming.NamingException;
 import javax.servlet.jsp.jstl.sql.Result;
-import javax.servlet.jsp.jstl.sql.ResultSupport;
 
+@ViewScoped
 public class TableData implements Serializable {
 
 	private static final long serialVersionUID = -5461466796865924645L;
 
 	private IDataService dataService;
 	private Result all;
-	private String query = "SELECT * FROM Customers";
+	private String query = "SELECT * FROM Employees";
 	private List<ColumnModel> columns;
 	private List<Map<String, String>> rowsArrMap;
 
