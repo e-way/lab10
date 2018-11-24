@@ -22,7 +22,8 @@ import javax.servlet.jsp.jstl.sql.ResultSupport;
 public class TableData implements Serializable {
 
 	private static final long serialVersionUID = -5461466796865924645L;
-	private Connection conn;
+
+	private IDataService dataService;
 	private Result all;
 	private String query = "SELECT * FROM Customers";
 	private List<ColumnModel> columns;
@@ -62,7 +63,7 @@ public class TableData implements Serializable {
 		}
 		return arrMap;
 	}
-	
+
 	public List<Map<String, String>> getRowsArrMap() {
 		return rowsArrMap;
 	}
@@ -79,53 +80,23 @@ public class TableData implements Serializable {
 		this.columns = columns;
 	}
 
-	public Connection getConnection() throws SQLException {
-		return getConnection("javastudent", "compjava");
-	}
-
-	public Connection getConnection(String user, String pass) throws SQLException {
-		Connection conn = null;
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			conn = DriverManager.getConnection("jdbc:sqlserver://Beangrinder.bcit.ca", user, pass);
-		} catch (ClassNotFoundException cnfe) {
-			System.out.println("FAILED TO CONNECT TO DATABASE");
-		}
-
-		return conn;
-	}
-
 	public Result getAll() throws SQLException, NamingException {
-		return getAll(query);
-	}
-
-	public Result getAll(String query) throws SQLException, NamingException {
-		try {
-			conn = getConnection("javastudent", "compjava");
-			Statement stmt = conn.createStatement();
-			ResultSet result = stmt.executeQuery(query);
-
-			return ResultSupport.toResult(result);
-		} finally {
-			close();
+		if (dataService == null) {
+			dataService = new Db();
 		}
+		return dataService.getAll(query);
 	}
 
 	public String queryAction(String value) throws SQLException, NamingException {
-		this.all = getAll(value);
+		if (dataService == null) {
+			dataService = new Db();
+		}
+		this.all = dataService.getAll(value);
 
 		columns = getFormatedColumnNames(all.getColumnNames());
 		rowsArrMap = getDataForTable(all.getRows());
 
 		return "/WEB-INF/jsp/output.xhtml";
-	}
-
-	public void close() throws SQLException {
-		if (conn == null) {
-			return;
-		}
-		conn.close();
-		conn = null;
 	}
 
 	static public class ColumnModel implements Serializable {
@@ -146,5 +117,4 @@ public class TableData implements Serializable {
 			return property;
 		}
 	}
-
 }
