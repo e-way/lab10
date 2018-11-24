@@ -14,13 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
-import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
-import javax.faces.bean.SessionScoped;
 import javax.naming.NamingException;
 import javax.servlet.jsp.jstl.sql.Result;
 import javax.servlet.jsp.jstl.sql.ResultSupport;
@@ -37,7 +33,7 @@ public class TableData implements Serializable {
 	private Map<String, String> columnMap = new LinkedHashMap<>();
 	private List<SortedMap<?, ?>> rowArray;
 	private SortedMap<?, ?> mapper = new TreeMap();
-	private List<List<ColumnModel>> rowsArr;
+//	private List<List<ColumnModel>> rowsArr;
 	private List<ColumnModel>tempRowsArr;
 	
 	private List<Map<String, String>> rowsArrMap;
@@ -58,14 +54,6 @@ public class TableData implements Serializable {
 
 	public void setTempRowsArr(List<ColumnModel> tempRowsArr) {
 		this.tempRowsArr = tempRowsArr;
-	}
-
-	public List<List<ColumnModel>> getRowsArr() {
-		return rowsArr;
-	}
-
-	public void setRowsArr(List<List<ColumnModel>> rowsArr) {
-		this.rowsArr = rowsArr;
 	}
 
 	public SortedMap<?, ?> getMapper() {
@@ -92,9 +80,6 @@ public class TableData implements Serializable {
 		Result all = getAll();
 		rows = all.getRows();
 		
-		
-		
-		rowsArr = new ArrayList<List<ColumnModel>>(); 
 		rowsArrMap = new ArrayList<Map<String,String>>();
 		
 	    for (int i=0;i<rows.length;i++)
@@ -113,11 +98,8 @@ public class TableData implements Serializable {
 	    		map.put(key, value);
 	    	}
 	    	rowsArrMap.add(map);
-	    	rowsArr.add(col);
 	    }
 	
-	    rowSize = rowsArr.size();//all.getRowCount();
-		
 		Object[][] rows2 = all.getRowsByIndex();
 		
 		for (int i=0;i<rows2.length; i++)
@@ -136,18 +118,6 @@ public class TableData implements Serializable {
 			columns.add(new ColumnModel(col.toUpperCase(), col));
 		}
 		rowArray = Arrays.asList(rows);
-		
-//		for (int i=0;i<rowArray.size();i++)
-//		{
-//			SortedMap<?, ?> map = rowArray.get(i);
-//			System.out.println("");
-//		}
-//		for (int i = 0; i < rows.length; i++) {
-//			SortedMap<String, Object> mp = (SortedMap<String, Object>) rows[i];
-//			for (String k : mp.keySet()) {
-//				columns.add(new ColumnModel(k, mp.get(k)));
-//			}
-//		}
        System.out.println("");
 	}
 
