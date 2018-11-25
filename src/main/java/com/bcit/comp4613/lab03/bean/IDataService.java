@@ -1,4 +1,4 @@
-package com.bcit.learn.yy.bean;
+package com.bcit.comp4613.lab03.bean;
 
 import javax.servlet.jsp.jstl.sql.Result;
 

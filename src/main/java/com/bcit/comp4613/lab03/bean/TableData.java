@@ -1,4 +1,4 @@
-package com.bcit.learn.yy.bean;
+package com.bcit.comp4613.lab03.bean;
 
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -10,11 +10,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
-import javax.faces.bean.ViewScoped;
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
 import javax.servlet.jsp.jstl.sql.Result;
 
-@ViewScoped
+@ManagedBean(name = "tableData1")
+@SessionScoped
 public class TableData implements Serializable {
 
 	private static final long serialVersionUID = -5461466796865924645L;
@@ -26,6 +29,9 @@ public class TableData implements Serializable {
 	private List<Map<String, String>> rowsArrMap;
 
 	public TableData() throws SQLException, NamingException {
+		FacesContext fc = FacesContext.getCurrentInstance();
+		query = getQuery(fc);
+
 		Result all = getAll();
 
 		columns = getFormatedColumnNames(all.getColumnNames());
@@ -87,12 +93,22 @@ public class TableData implements Serializable {
 		if (dataService == null) {
 			dataService = new Db();
 		}
+		this.query = value;
 		this.all = dataService.getAll(value);
 
 		columns = getFormatedColumnNames(all.getColumnNames());
 		rowsArrMap = getDataForTable(all.getRows());
 
-		return "/WEB-INF/jsp/output.xhtml";
+		return "output.xhtml?faces-redirect=true";
+	}
+
+	private String getQuery(FacesContext fc) {
+		Map<String, String> params = fc.getExternalContext().getRequestParameterMap();
+		String query = (String) params.get("query");
+		if (query == null || query.equals("")) {
+			return "SELECT * FROM Employees";
+		}
+		return query;
 	}
 
 	static public class ColumnModel implements Serializable {

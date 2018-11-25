@@ -21,64 +21,29 @@
 
 	<div id="mainDoc">
 		<h:form>
-			<!--  
-			<p:dataTable id="table" var="map" value="#{tableData1.rowArray}">
-				<c:forEach items="#{tableData1.mapper}" var="entry">
-					<p:column headerText="#{entry.key}">
-            			#{map[entry.key]}
-        		</p:column>
-				</c:forEach>
-			</p:dataTable>
-
-
-			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArr}">
-				<p:columns value="#{tableData1.columns}" var="column" columnIndexVar="colIndex">
-				<f:facet name="header">
-						<h:outputText value="#{column.header}" />
-					</f:facet>
-					<c:forEach var="i" begin="0" end="#{tableData1.rowSize-1}" step="1">
-					   #{data.get(i).property}
-					</c:forEach>
-					
-				
-				</p:columns>
-			</p:dataTable>
-
--->
-
-			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArr}">
+			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArrMap}"
+				rows="5" paginator="true" sortMode="multiple" 
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15"
+				style="width: 80%;margin-left: 10%;margin-right: 10%;">
 				<p:columns value="#{tableData1.columns}" var="column"
 					columnIndexVar="colIndex">
-					<!--  <c:forEach var="i" begin="0" end="#{tableData1.rowSize-1}" step="1"> -->
-
-					<!-- <f:facet name="header">
-							<h:outputText value="#{data.get(i).header}" />
-							#{data.get(i).header}
-						</f:facet>
-						 -->
 					<f:facet name="header">
 						<h:outputText value="#{column.header}" />
-						</f:facet>
-							<c:forEach var="j" begin="0" end="#{tableData1.columns.size()-1}"
-								step="1">
-						
-						   #{data.get(j).property}
-						   
-						</c:forEach>
-						
-						
-						<!--  </c:forEach> -->
+					</f:facet>
+					<p:column headerText="test" sortBy="#{false}" sortField="#{data.get(column.property)}">
+					
+					    #{data.get(column.property)}
+					</p:column>
 				</p:columns>
 			</p:dataTable>
 
-
-
-			<h:inputText binding="#{query}" value="select * from customers" />
-			<h:commandButton rendered="true" value="Query"
-				action="#{tableData1.queryAction(query.value)}" />
+			<h:inputText binding="#{query}" value="select * from Employees" />
+			<h:commandButton rendered="true" value="Query" action="#{tableData1.queryAction(query.value)}" >
+				<f:param name="query" value="#{query}"/>
+				</h:commandButton>
 			<h:outputText value="&lt;br/&gt;" escape="false" />
 		</h:form>
-
 	</div>
 
 	<div id="footer">
