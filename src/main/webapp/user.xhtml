@@ -21,27 +21,37 @@
 
 	<div id="mainDoc">
 		<h:form>
-			<p:dataTable id="table2" var="data" value="#{tableData1.rowsArrMap}"
-				rows="5" paginator="true" sortMode="multiple" 
+			<p:dataTable id="table2" var="employee" value="#{Employee.employees}">
+			<!--  
+				rows="5" paginator="true" lazy="true"
 				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
 				rowsPerPageTemplate="5,10,15"
-				style="width: 80%;margin-left: 10%;margin-right: 10%;">
-				<p:columns value="#{tableData1.columns}" var="column"
-					columnIndexVar="colIndex">
-					<f:facet name="header">
-						<h:outputText value="#{column.header}" />
-					</f:facet>
-					<p:column headerText="test" sortBy="#{false}" sortField="#{data.get(column.property)}">
-					
-					    #{data.get(column.property)}
-					</p:column>
-				</p:columns>
+				style="width: 80%;margin-left: 10%;margin-right: 10%;"
+			-->
+				
+
+				<p:column headerText="ID">
+					<h:outputText value="#{employee.ID}" />
+				</p:column>
+				
+				<p:column headerText="FIRSTNAME" sortBy="#{employee.firstName}">
+					<h:outputText value="#{employee.firstName}" />
+				</p:column>
+				
+				<p:column headerText="LASTNAME">
+					<h:outputText value="#{employee.lastName}" />
+				</p:column>
+				
+				<p:column headerText="DOB">
+					<h:outputText value="#{employee.DOB}" />
+				</p:column>
 			</p:dataTable>
 
-			<h:inputText binding="#{query}" value="select * from Employees" />
-			<h:commandButton rendered="true" value="Query" action="#{tableData1.queryAction(query.value)}" >
-				<f:param name="query" value="#{query}"/>
-				</h:commandButton>
+			<h:inputText binding="#{query}" value="SELECT * FROM Employees" />
+			<h:commandButton rendered="true" value="Query" ajax="true"
+				action="#{tableData1.queryAction(query.value)}">
+				<f:param name="query" value="#{query}" />
+			</h:commandButton>
 			<h:outputText value="&lt;br/&gt;" escape="false" />
 		</h:form>
 	</div>

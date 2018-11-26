@@ -2,14 +2,17 @@ package com.bcit.comp4613.lab03.bean;
 
 import java.sql.Date;
 
-public class Employees {
+public class Employee {
 	private String ID;
 	private String firstName;
 	private String lastName;
 	private Date DOB;
 	
+	public Employee() {
+		
+	}
 	
-	public Employees(String iD, String firstName, String lastName, Date dOB) {
+	public Employee(String iD, String firstName, String lastName, Date dOB) {
 		super();
 		ID = iD;
 		this.firstName = firstName;
@@ -59,7 +62,7 @@ public class Employees {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Employees other = (Employees) obj;
+		Employee other = (Employee) obj;
 		if (DOB == null) {
 			if (other.DOB != null)
 				return false;

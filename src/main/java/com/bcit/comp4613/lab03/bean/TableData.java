@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.SortedMap;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.RequestScoped;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.naming.NamingException;
@@ -30,8 +31,13 @@ public class TableData implements Serializable {
 
 	public TableData() throws SQLException, NamingException {
 		FacesContext fc = FacesContext.getCurrentInstance();
+		
 		query = getQuery(fc);
-
+		if (!query.contains("SELECT"))
+		{
+			query = "SELECT * FROM employees";
+		}
+		
 		Result all = getAll();
 
 		columns = getFormatedColumnNames(all.getColumnNames());
